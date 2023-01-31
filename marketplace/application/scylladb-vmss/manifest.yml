@@ -1,0 +1,11 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+name                : "scylla-db"
+plan_name           : "vmss"
+app_path            : "."
+app                 : "marketplacePackage.zip"
+json_listing_config : "listing_config.json"
+logo_large: "scylladb_216_216.png"
+logo_small: "scylladb_48_48.png"
+logo_medium: "scylladb_90_90.png"
+logo_wide: "scylladb_255_115.png"
