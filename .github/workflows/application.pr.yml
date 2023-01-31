@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-name: Solution Template PR
+name: Marketplace Application PR
 
 on:
   workflow_dispatch:
@@ -8,22 +8,29 @@ on:
     branches: [ main ]
 
 env:
-  APPLICATION_DIRECTORY: marketplace/application/unreal-cloud-ddc
   PLAN_NAME: preview
-  APPLICATION_NAME: unreal-cloud-ddc
   CLEANUP: false
 
 jobs:
+  get-module-to-validate:
+    uses: ./.github/workflows/get-changed-module.yml
+
   ValidateARMTemplates:
+    needs: get-module-to-validate
+    if: needs.get-module-to-validate.outputs.module_dir
     runs-on: ubuntu-latest
+    env:
+      APPLICATION_DIRECTORY: ${{ needs.get-module-to-validate.outputs.module_dir }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - run: az bicep build --file "$bicepFilePath" --outfile "$outputFilePath" > bicep.txt
         shell: bash
         env:
           bicepFilePath: "${{ env.APPLICATION_DIRECTORY }}/app-contents/mainTemplate.bicep"
           outputFilePath: "${{ env.APPLICATION_DIRECTORY }}/app-contents/mainTemplate.json"
+
       - name: Publish Bicep Compile Results
         uses: actions/upload-artifact@v3
         with:
@@ -32,12 +39,18 @@ jobs:
         if: always()
       - name: Run ARM-TTK
         uses: ./.github/actions/run-armttk
+        if: always()
         with:
           templatesFolderPath: "${{ env.APPLICATION_DIRECTORY }}/app-contents"
           armttkVersion: aka.ms/arm-ttk-marketplace
+
   VerifyOfferCreation:
+    needs: get-module-to-validate
+    if: needs.get-module-to-validate.outputs.module_dir
     runs-on: ubuntu-latest
-    # needs: ValidateARMTemplates
+    env:
+      APPLICATION_DIRECTORY: ${{ needs.get-module-to-validate.outputs.module_dir }}
+      APPLICATION_NAME: ${{ needs.get-module-to-validate.outputs.module_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
