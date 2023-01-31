@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 param location                 string
 param vnetAddressPrefix        array
 param subnetAddressPrefix      string
