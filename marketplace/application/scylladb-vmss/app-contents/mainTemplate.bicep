@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 @description('Deployment Location')
 param location string = resourceGroup().location
 
