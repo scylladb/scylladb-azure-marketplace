@@ -1,0 +1,38 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+name: Get changed module
+
+on:
+  workflow_call:
+    outputs:
+      module_dir:
+        description: "The directory of the added or updated module. Empty if no module was changed."
+        value: ${{ jobs.main.outputs.module_dir }}
+      module_name:
+        description: "The name of the added or updated module. Empty if no module was changed."
+        value: ${{ jobs.main.outputs.module_name }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    outputs:
+      module_dir: ${{ steps.get-changed-module.outputs.result }}
+      module_name: ${{ steps.split.outputs.module_name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get changed module
+        uses: actions/github-script@v6
+        id: get-changed-module
+        with:
+          result-encoding: string
+          script: |
+            const script = require("./scripts/github-actions/get-changed-module.js")
+            return await script({ require, github, context, core })
+
+      - name: Split branch name
+        env:
+          MODULE: ${{ steps.get-changed-module.outputs.result }}
+        id: split
+        run: echo "module_name=${MODULE##*/}" >> $GITHUB_OUTPUT
