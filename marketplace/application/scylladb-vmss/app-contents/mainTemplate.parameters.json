@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "imageLocation": {
+      "value": "gallery"
+    },
+    "vmssName": {
+      "value": "dcibscylladb"
+    },
+    "vmssSku": {
+      "value": "Standard_D4ds_v4"
+    },
+    "vmssOsDiskType": {
+      "value": "Premium_LRS"
+    },
+    "vmssInstanceCount": {
+      "value": 1
+    },
+    "administratorLogin": {
+      "value": "dcibadmin"
+    },
+    "passwordAdministratorLogin": {
+      "value": "B1g-D6taRocks"
+    }
+  }
+}
