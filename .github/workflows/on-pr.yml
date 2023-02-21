@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKING_DIR: marketplace/application/unreal-cloud-ddc/app-contents
-      resourceGroup: devops-resources
+      resourceGroup: sct
       location: eastus
       storageAccount: unrealddcdevopsstorage
       artifactContainer: artifacts
     steps:
     - uses: actions/checkout@v3
-    - uses: azure/login@v1
+    - uses: azure/actions/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
