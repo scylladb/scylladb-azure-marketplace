@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKING_DIR: marketplace/application/unreal-cloud-ddc/app-contents
-      resourceGroup: devops-resources
+      resourceGroup: sct
       location: eastus
       storageAccount: unrealddcdevopsstorage
       artifactContainer: artifacts
